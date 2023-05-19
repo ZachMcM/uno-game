@@ -11,7 +11,7 @@ class Main {
         List<Player> players = new ArrayList<>();
 
         System.out.println("\n ----UNO----");
-        System.out.print("Enter how many players (max 20): ");
+        System.out.print("Enter how many players (max 8): ");
         String inputPlayerCount = input.nextLine();
         while (!isValidNumber(inputPlayerCount)) {
             System.out.println("Invalid player count");
@@ -123,7 +123,7 @@ class Main {
     public static boolean isValidNumber(String s) {
         try {
             int count = Integer.parseInt(s);
-            if (count > 20 || count < 1) {
+            if (count > 8 || count < 1) {
                 return false;
             } else {
                 return true;
