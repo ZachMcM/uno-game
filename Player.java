@@ -54,15 +54,15 @@ public class Player {
             }  
         }
 
-        System.out.println(name + "'s deck...");
-
-        System.out.println(this);
-
         Card pickedCard = null;
 
         if (!canPlay(discardPile)) {
             drawCards(discardPile, drawPile);
         }
+
+        System.out.println(name + "'s deck...");
+
+        System.out.println(this);
 
         System.out.println("Pick a card by typing it's value followed by a space and it's color (all for wild cards)");
         String unformattedPick = input.nextLine();
@@ -121,7 +121,9 @@ public class Player {
     protected void drawCards(Pile discardPile, Pile drawPile) {
         Card currCard = discardPile.getCurr();
         Card drawTop = drawPile.removeTop();
-        while (!drawTop.getColor().equals(currCard.getColor()) && !drawTop.getValue().equals(currCard.getValue())) {
+        playerDeck.add(0, drawTop);
+        System.out.println(name + " had to draw: " + drawTop);
+        while (!(drawTop.getColor().equals(currCard.getColor())) && !(drawTop.getValue().equals(currCard.getValue()))) {
             drawTop = drawPile.removeTop();
             playerDeck.add(0, drawTop);
             System.out.println(name + " had to draw: " + drawTop);
@@ -131,7 +133,7 @@ public class Player {
     private boolean canPlay(Pile discardPile) {
         Card currCard = discardPile.getCurr();
         for (Card c : playerDeck) {
-            if (c.getColor().equals(currCard.getColor()) || c.getValue().equals(currCard.getValue())) {
+            if (c.getColor().equals(currCard.getColor()) || c.getValue().equals(currCard.getValue()) || c.getColor().equals("all")) {
                 return true;
             }
         }

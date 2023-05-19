@@ -26,7 +26,6 @@ public class AI extends Player {
             }    
         } else if (currCard.getValue().equals("+4")) {
             System.out.println("AI has to draw 4 cards");
-            System.out.println("You have to draw two cards");
             for (int i = 0; i < 4; i++) {
                 Card removedCard = drawPile.removeTop();
                 System.out.println("AI drew: " + removedCard);
@@ -49,15 +48,14 @@ public class AI extends Player {
 
         if (pickedCard == null) {
             drawCards(discardPile, drawPile);
-        }
-
-        for (Card c : aiDeck) {
-            if (currCard.getColor().equalsIgnoreCase("all")) {
-                pickedCard = c;
-            } else {
-                if (c.getValue().equals(currCard.getValue()) || c.getColor().equals(currCard.getColor())) {
+            for (Card c : aiDeck) {
+                if (currCard.getColor().equals("all")) {
                     pickedCard = c;
-                    break;
+                } else {
+                    if (c.getValue().equals(currCard.getValue()) || c.getColor().equals(currCard.getColor())) {
+                        pickedCard = c;
+                        break;
+                    }
                 }
             }
         }

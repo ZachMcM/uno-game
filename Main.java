@@ -12,24 +12,23 @@ class Main {
 
         System.out.println("\n ----UNO----");
         System.out.print("Enter how many players (max 20): ");
-        int inputPlayerCount = input.nextInt();
-        input.nextLine();
-        while (inputPlayerCount <= 0 || inputPlayerCount > 20) {
+        String inputPlayerCount = input.nextLine();
+        while (!isValidNumber(inputPlayerCount)) {
             System.out.println("Invalid player count");
             System.out.print("Please enter a valid player count: ");
-            inputPlayerCount = input.nextInt();
-            input.nextLine();
+            inputPlayerCount = input.nextLine();
         }
+        int playerCount = Integer.parseInt(inputPlayerCount);
         clearScreen();
 
-        if (inputPlayerCount == 1) {
+        if (playerCount == 1) {
             System.out.println("Your opponent will be an AI");
             players.add(new AI());
             System.out.print("Enter your name: ");
             players.add(new Player(input.nextLine()));
             clearScreen();
         } else {
-            for (int i = 0; i < inputPlayerCount; i++) {
+            for (int i = 0; i < playerCount; i++) {
                 System.out.print("Enter player " + (i + 1) + " name: ");
                 players.add(new Player(input.nextLine()));
                 clearScreen();
@@ -65,11 +64,11 @@ class Main {
         boolean forward = true;
 
         while (!isADeckEmpty(players)) {
-            if (deck.getCurr().getValue().equals("reverse") && players.size() > 2) {
+            if (discardPile.getCurr().getValue().equals("reverse") && players.size() > 2) {
                 forward = false;
                 currentPlayer = currentPlayer.prev;
                 currentPlayer = currentPlayer.prev;
-            } else if (deck.getCurr().getValue().equals("skip")) {
+            } else if (discardPile.getCurr().getValue().equals("skip")) {
                 if (skipped) {
                     currentPlayer.data.move(drawPile, discardPile, input);
                     if (currentPlayer.data.isDeckEmpty()) {
@@ -80,6 +79,7 @@ class Main {
                     } else {
                         currentPlayer = currentPlayer.prev;
                     }
+                    skipped = false;
                 } else {
                     if (forward) {
                         currentPlayer = currentPlayer.next;
@@ -88,7 +88,6 @@ class Main {
                     }
                     skipped = true;
                 }
-                skipped = false;
             } else {
                 currentPlayer.data.move(drawPile, discardPile, input);
                 if (currentPlayer.data.isDeckEmpty()) {
@@ -104,7 +103,7 @@ class Main {
 
         for (Player player : players) {
             if (player.isDeckEmpty()) {
-                System.out.println(player + " won!");
+                System.out.println(player.getName() + " won!");
                 break;
             }
         }
@@ -119,6 +118,19 @@ class Main {
             }
         }
         return false;
+    }
+
+    public static boolean isValidNumber(String s) {
+        try {
+            int count = Integer.parseInt(s);
+            if (count > 20 || count < 1) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static <T> Node<Player> convert(List<Player> plaeryList) {
